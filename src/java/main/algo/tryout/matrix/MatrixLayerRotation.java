@@ -2,22 +2,169 @@ package algo.tryout.matrix;
 
 public class MatrixLayerRotation {
 
-	
 	public static void main(String[] args) {
-		int[][] matrix = new int[][] {{1,2,3,4},{7,8,9,10},{13,14,15,16},{19,20,21,22},{25,26,27,28}};
-		/*int[][] matrix = new int[][] { { 9718805, 60013003, 5103628, 85388216, 21884498, 38021292, 73470430, 31785927 },
-				{ 69999937, 71783860, 10329789, 96382322, 71055337, 30247265, 96087879, 93754371 },
-				{ 79943507, 75398396, 38446081, 34699742, 1408833, 51189, 17741775, 53195748 },
-				{ 79354991, 26629304, 86523163, 67042516, 54688734, 54630910, 6967117, 90198864 },
-				{ 84146680, 27762534, 6331115, 5932542, 29446517, 15654690, 92837327, 91644840 },
-				{ 58623600, 69622764, 2218936, 58592832, 49558405, 17112485, 38615864, 32720798 },
-				{ 49469904, 5270000, 32589026, 56425665, 23544383, 90502426, 63729346, 35319547 },
-				{ 20888810, 97945481, 85669747, 88915819, 96642353, 42430633, 47265349, 89653362 },
-				{ 55349226, 10844931, 25289229, 90786953, 22590518, 54702481, 71197978, 50410021 },
-				{ 9392211, 31297360, 27353496, 56239301, 7071172, 61983443, 86544343, 43779176 } };*/
-		int[][] sortedMatrix = matrix.clone();
-		int r =5, swap = -1, tswap = -1, len = 4, heg = 5, nLen = -1, nHeg = -1,
-				loopCount = Math.min((heg / 2), len / 2);
+		//int[][] matrix = new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 },
+		//		{ 17, 18, 19, 20 } };
+
+		int[][] sortedMatrix = new int[][] { { 1, 2, 3, 4, 5, 6, 7, 8 },
+				{ 9, 10, 11, 12, 13, 14, 15, 16 },
+				{ 17, 18, 19, 20, 21, 22, 23, 24 },
+				{ 25, 26, 27, 28, 29, 30, 31, 32 },
+				{ 33, 34, 35, 36, 37, 38, 39, 40 },
+				{ 41, 42, 43, 44, 45, 46, 47, 48 },
+				{ 49, 50, 51, 52, 53, 54, 55, 56 },
+				{ 57, 58, 59, 60, 61, 62, 63, 64 },
+				{ 65, 66, 67, 68, 69, 70, 71, 72 },
+				{ 73, 74, 75, 76, 77, 78, 79, 80 } };
+
+		// int[][] sortedMatrix = matrix.clone();
+		int r = 40, len = 8, heg = 10;
+
+		// approach1(sortedMatrix, r, heg, len);
+		// approach2(sortedMatrix, r, heg, len);
+		approach3(sortedMatrix, r, heg, len);
+		for (int i = 0; i < sortedMatrix.length; i++) {
+			for (int d : sortedMatrix[i]) {
+				System.out.print(d + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	private static void approach3(int[][] sortedMatrix, int r, int aheg, int alen) {
+		int[][] newSortedMatrix = new int[aheg][alen];
+		int len = 0, heg = 0, loopCount = Math.min((aheg / 2), alen / 2);
+		len = alen - 1;
+		heg = aheg - 1;
+		int lIcursor = 0, lJcursor = 0, rIcursor = 0, rJcursor = 0, bIcursor = 0, bJcursor = 0, tIcursor = 0,
+				tJcursor = 0, roundTrip;
+		int lNewPosition, ljNewPosition, rNewPosition, rjNewPosition, bNewPosition, biNewPosition, tNewPosition,
+				tiNewPosition;
+		for (int i = 0; i < (loopCount); i++) {
+			roundTrip = ((((heg - (i)) * 2)) + (((len - (i)) * 2)));
+			lIcursor = i;
+			lJcursor = i;
+			ljNewPosition = i;
+			rIcursor = heg;
+			rJcursor = len;
+			rjNewPosition = len;
+			bIcursor = i;
+			bJcursor = len;
+			biNewPosition = i;
+			tIcursor = i;
+			tJcursor = i;
+			int newPosition = (r % roundTrip);
+			while (lIcursor < heg) {
+				lNewPosition = newPosition + lIcursor;
+				if (lNewPosition > heg) {
+					ljNewPosition++;
+					lNewPosition = heg;
+				}
+				newSortedMatrix[lNewPosition][ljNewPosition] = sortedMatrix[lIcursor][lJcursor];
+
+				rNewPosition = rIcursor - newPosition;
+				if (rNewPosition < i) {
+					rjNewPosition--;
+					rNewPosition = i;
+				}
+				newSortedMatrix[rNewPosition][rjNewPosition] = sortedMatrix[rIcursor][rJcursor];
+				lIcursor++;
+				rIcursor--;
+			}
+			bIcursor = lIcursor;
+			biNewPosition = bIcursor;
+			bJcursor = lJcursor;
+			tIcursor = rIcursor;
+			tiNewPosition = tIcursor;
+			tJcursor = rJcursor;
+			while (bJcursor < len) {
+				bNewPosition = newPosition + bJcursor;
+				if (bNewPosition > len) {
+					biNewPosition--;
+					bNewPosition = len;
+				}
+				newSortedMatrix[biNewPosition][bNewPosition] = sortedMatrix[bIcursor][bJcursor];
+				tNewPosition = tJcursor - newPosition;
+				if (tNewPosition < i) {
+					tiNewPosition++;
+					tNewPosition = i;
+				}
+				newSortedMatrix[tiNewPosition][tNewPosition] = sortedMatrix[tIcursor][tJcursor];
+				bJcursor++;
+				tJcursor--;
+			}
+
+			// reduce height
+			heg--;
+			len--;
+		}
+		for (int i = 0; i < newSortedMatrix.length; i++) {
+			for (int d : newSortedMatrix[i]) {
+				System.out.print(d + " ");
+			}
+			System.out.println();
+		}
+
+	}
+
+	private static void approach2(int[][] sortedMatrix, int r, int aheg, int alen) {
+		int swap = -1, lswap = -1, rswap = -1, bswap = -1, tswap = -1, len = 0, heg = 0,
+				loopCount = Math.min((aheg / 2), alen / 2);
+		for (int l = 1; l <= r; l++) {
+			len = alen - 1;
+			heg = aheg - 1;
+			// nLen = -1;
+			// nHeg = -1;
+			int lIcursor = 0, lJcursor = 0, rIcursor = 0, rJcursor = 0, bIcursor = 0, bJcursor = 0, tIcursor = 0,
+					tJcursor = 0;
+			for (int i = 0; i < (loopCount); i++) {
+				lIcursor = i;
+				lJcursor = i;
+				rIcursor = heg;
+				rJcursor = len;
+				bIcursor = i;
+				bJcursor = len;
+				tIcursor = i;
+				tJcursor = i;
+				// move top to bottom & bottom to up;
+				while (lIcursor <= heg) {
+					// if(icursor+1>heg)break;
+					// swap=sortedMatrix[icursor][jcursor];
+					swap = sortedMatrix[lIcursor][lJcursor];
+					sortedMatrix[lIcursor++][lJcursor] = lswap;
+					lswap = swap;
+
+					swap = sortedMatrix[rIcursor][rJcursor];
+					sortedMatrix[rIcursor--][rJcursor] = rswap;
+					rswap = swap;
+
+				}
+				bswap = lswap;
+				tswap = rswap;
+				bIcursor = lIcursor - 1;
+				bJcursor = lJcursor + 1;
+				tIcursor = rIcursor + 1;
+				tJcursor = rJcursor - 1;
+				while (bJcursor <= len) {
+					// if(jcursor+1>=len)break;
+					swap = sortedMatrix[bIcursor][bJcursor];
+					sortedMatrix[bIcursor][bJcursor++] = bswap;
+					bswap = swap;
+
+					swap = sortedMatrix[tIcursor][tJcursor];
+					sortedMatrix[tIcursor][tJcursor--] = tswap;
+					tswap = swap;
+				}
+
+				// reduce height
+				heg--;
+				len--;
+			}
+		}
+	}
+
+	private static void approach1(int[][] sortedMatrix, int r, int aheg, int alen) {
+		int swap = -1, tswap = -1, len = 0, heg = 0, loopCount = Math.min((aheg / 2), alen / 2), nLen = 0, nHeg = 0;
 		for (int l = 1; l <= r; l++) {
 			len = 4;
 			heg = 5;
@@ -74,12 +221,6 @@ public class MatrixLayerRotation {
 				nLen++;
 			}
 
-		}
-		for (int i = 0; i < sortedMatrix.length; i++) {
-			for (int d : sortedMatrix[i]) {
-				System.out.print(d + " ");
-			}
-			System.out.println();
 		}
 	}
 }
