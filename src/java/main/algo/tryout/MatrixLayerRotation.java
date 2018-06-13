@@ -1,4 +1,4 @@
-package algo.tryout.matrix;
+package algo.tryout;
 
 public class MatrixLayerRotation {
 
