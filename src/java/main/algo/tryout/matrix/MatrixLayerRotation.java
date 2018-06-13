@@ -3,28 +3,32 @@ package algo.tryout.matrix;
 public class MatrixLayerRotation {
 
 	public static void main(String[] args) {
-		// int[][] matrix = new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11,
-		// 12 }, { 13, 14, 15, 16 },
-		// { 17, 18, 19, 20 } };
-
+		/*int[][] matrix = new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 },
+				{ 17, 18, 19, 20 } };
+		int[][] matrix1 = new int[][] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 },
+				{ 17, 18, 19, 20 } };
+*/
 		int[][] sortedMatrix = new int[][] { { 1, 2, 3, 4, 5, 6, 7, 8 }, { 9, 10, 11, 12, 13, 14, 15, 16 },
 				{ 17, 18, 19, 20, 21, 22, 23, 24 }, { 25, 26, 27, 28, 29, 30, 31, 32 },
 				{ 33, 34, 35, 36, 37, 38, 39, 40 }, { 41, 42, 43, 44, 45, 46, 47, 48 },
 				{ 49, 50, 51, 52, 53, 54, 55, 56 }, { 57, 58, 59, 60, 61, 62, 63, 64 },
 				{ 65, 66, 67, 68, 69, 70, 71, 72 }, { 73, 74, 75, 76, 77, 78, 79, 80 } };
+				int[][] sortedMatrix1 = new int[][] { { 1, 2, 3, 4, 5, 6, 7, 8 }, { 9, 10, 11, 12, 13, 14, 15, 16 },
+					{ 17, 18, 19, 20, 21, 22, 23, 24 }, { 25, 26, 27, 28, 29, 30, 31, 32 },
+					{ 33, 34, 35, 36, 37, 38, 39, 40 }, { 41, 42, 43, 44, 45, 46, 47, 48 },
+					{ 49, 50, 51, 52, 53, 54, 55, 56 }, { 57, 58, 59, 60, 61, 62, 63, 64 },
+					{ 65, 66, 67, 68, 69, 70, 71, 72 }, { 73, 74, 75, 76, 77, 78, 79, 80 } };
 
-		// int[][] sortedMatrix = matrix.clone();
+
 		int r = 40, len = 8, heg = 10;
 
 		// approach1(sortedMatrix, r, heg, len);
-		// approach2(sortedMatrix, r, heg, len);
-		approach3(sortedMatrix, r, heg, len);
-		for (int i = 0; i < sortedMatrix.length; i++) {
-			for (int d : sortedMatrix[i]) {
-				System.out.print(d + " ");
-			}
-			System.out.println();
-		}
+		approach2(sortedMatrix, r, heg, len);
+		approach3(sortedMatrix1, r, heg, len);
+		/*
+		 * for (int i = 0; i < sortedMatrix.length; i++) { for (int d : sortedMatrix[i])
+		 * { System.out.print(d + " "); } System.out.println(); }
+		 */
 	}
 
 	private static void approach3(int[][] sortedMatrix, int r, int aheg, int alen) {
@@ -34,69 +38,36 @@ public class MatrixLayerRotation {
 		heg = aheg - 1;
 		int lIcursor = 0, lJcursor = 0, rIcursor = 0, rJcursor = 0, bIcursor = 0, bJcursor = 0, tIcursor = 0,
 				tJcursor = 0, roundTrip;
-		int lNewPosition, ljNewPosition, rNewPosition, rjNewPosition, bNewPosition, biNewPosition, tNewPosition,
-				tiNewPosition;
 		for (int i = 0; i < (loopCount); i++) {
 			roundTrip = ((((heg - (i)) * 2)) + (((len - (i)) * 2)));
 			lIcursor = i;
 			lJcursor = i;
-			ljNewPosition = i;
 			rIcursor = heg;
 			rJcursor = len;
-			rjNewPosition = len;
 			bIcursor = i;
 			bJcursor = len;
-			biNewPosition = i;
 			tIcursor = i;
 			tJcursor = i;
 			int newPosition = (r % roundTrip);
 			while (lIcursor < heg) {
-				lNewPosition = newPosition + lIcursor;
-				if (lNewPosition > heg) {
-					ljNewPosition = lNewPosition - heg;
-					lNewPosition = heg;
-				}
-				if (ljNewPosition > len) {
-					lNewPosition = lNewPosition - ((ljNewPosition + i) - len);
-					ljNewPosition = len;
-				}
-				newSortedMatrix[lNewPosition][ljNewPosition] = sortedMatrix[lIcursor][lJcursor];
 
-				rNewPosition = rIcursor - newPosition;
-				
-				if(rNewPosition>rIcursor) {
-					rIcursor=i;
-				}
-				if (rNewPosition < i) {
-					rjNewPosition=rNewPosition+len;
-					rNewPosition = i;
-				}
-				if(rjNewPosition>len) {
-					rNewPosition=rNewPosition + ((rNewPosition - i) - heg);
-				}
-				newSortedMatrix[rNewPosition][rjNewPosition] = sortedMatrix[rIcursor][rJcursor];
+				int[] newLIJPosition = getNewLeftIJposition(lIcursor, lJcursor, heg, len, i, newPosition);
+				newSortedMatrix[newLIJPosition[0]][newLIJPosition[1]] = sortedMatrix[lIcursor][lJcursor];
+
+				int[] newrIJPosition = getNewLeftIJposition(rIcursor, rJcursor, heg, len, i, newPosition);
+				newSortedMatrix[newrIJPosition[0]][newrIJPosition[1]] = sortedMatrix[rIcursor][rJcursor];
 				lIcursor++;
 				rIcursor--;
 			}
 			bIcursor = lIcursor;
-			biNewPosition = bIcursor;
 			bJcursor = lJcursor;
 			tIcursor = rIcursor;
-			tiNewPosition = tIcursor;
 			tJcursor = rJcursor;
 			while (bJcursor < len) {
-				bNewPosition = newPosition + bJcursor;
-				if (bNewPosition > len) {
-					biNewPosition--;
-					bNewPosition = len;
-				}
-				newSortedMatrix[biNewPosition][bNewPosition] = sortedMatrix[bIcursor][bJcursor];
-				tNewPosition = tJcursor - newPosition;
-				if (tNewPosition < i) {
-					tiNewPosition++;
-					tNewPosition = i;
-				}
-				newSortedMatrix[tiNewPosition][tNewPosition] = sortedMatrix[tIcursor][tJcursor];
+				int[] newBIJPosition = getNewLeftIJposition(bIcursor, bJcursor, heg, len, i, newPosition);
+				newSortedMatrix[newBIJPosition[0]][newBIJPosition[1]] = sortedMatrix[bIcursor][bJcursor];
+				int[] newTIJPosition = getNewLeftIJposition(tIcursor, tJcursor, heg, len, i, newPosition);
+				newSortedMatrix[newTIJPosition[0]][newTIJPosition[1]] = sortedMatrix[tIcursor][tJcursor];
 				bJcursor++;
 				tJcursor--;
 			}
@@ -105,6 +76,7 @@ public class MatrixLayerRotation {
 			heg--;
 			len--;
 		}
+		System.out.println("Approach --3");
 		for (int i = 0; i < newSortedMatrix.length; i++) {
 			for (int d : newSortedMatrix[i]) {
 				System.out.print(d + " ");
@@ -112,6 +84,40 @@ public class MatrixLayerRotation {
 			System.out.println();
 		}
 
+	}
+
+	private static int[] getNewLeftIJposition(int iCursor, int jCursor, int heg, int len, int i, int newPosition) {
+		int newPos = 0;
+		while (newPosition > 0) {
+
+			if ((iCursor >= i && iCursor < heg) && (jCursor == i)) {
+				int diff = heg - iCursor;
+				newPos = Math.min(diff, newPosition);
+				iCursor = iCursor + newPos;
+
+			} else if (iCursor == heg && (jCursor >= i && jCursor < len)) {
+				int diff = len - jCursor;
+				newPos = Math.min(diff, newPosition);
+				jCursor = jCursor + newPos;
+			} else if (iCursor == heg && jCursor == len) {
+				int diff = iCursor - i;
+				newPos = Math.min(diff, newPosition);
+				iCursor = iCursor - newPos;
+			}
+
+			else if ((iCursor > i && iCursor < heg) && (jCursor >= i && jCursor == len)) {
+				int diff = iCursor - i;
+				newPos = Math.min(diff, newPosition);
+				iCursor = iCursor - newPos;
+			} else if (iCursor == i && (jCursor >= i && jCursor <= len)) {
+				int diff = jCursor - i;
+				newPos = Math.min(diff, newPosition);
+				jCursor = jCursor - newPos;
+			}
+			newPosition = newPosition - newPos;
+
+		}
+		return new int[] { iCursor, jCursor };
 	}
 
 	private static void approach2(int[][] sortedMatrix, int r, int aheg, int alen) {
@@ -167,6 +173,13 @@ public class MatrixLayerRotation {
 				heg--;
 				len--;
 			}
+		}
+		System.out.println("Approach --2");
+		for (int i = 0; i < sortedMatrix.length; i++) {
+			for (int d : sortedMatrix[i]) {
+				System.out.print(d + " ");
+			}
+			System.out.println();
 		}
 	}
 
