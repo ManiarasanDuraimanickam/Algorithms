@@ -1,40 +1,26 @@
 package algo.tryout.pickingnumbers;
+
 import java.util.*;
 
+/**
+ * LOGIC ALERT :-
+ * 
+ * you just have to find out the multiset which has the maximum number of
+ * elements that satisfies the condition given in the question. Now see if you
+ * pick up elements like ,say, { 4,4,5,5,6} , so it is not a valid multiset
+ * because if you'd find out the difference between 6 and 4 , it will be 2 which
+ * is again greater than 1. SO now analyse through number thoery that no three
+ * consecutive elements can have the difference equal to one among the one
+ * except they are two subsequent numbers . Let's analyse this from the above
+ * example . {4,4,5,5} can be a valid multiset ,{5,5,6} can be a valid one
+ * because in each multiset there are two subsequent numbers . In first , it is
+ * 4 and 5. In second 5 and 6. So you just have to find out the frequency of the
+ * TWO consecutive numbers . Take a static array say ar and start find the
+ * frequency of every element in the array (original ). Now you have the array
+ * ar which contains frequency of every element in the original array . You just
+ * have to find out the maximum frequency of the consequent elements .
+ */
 public class PickingNumber {
-
-	/*public Object[] pickmaxmimumMultiset(int[] inputArray) {
-		Object[] result = new Object[2];
-		Arrays.sort(inputArray);
-		List<List<Integer>> possibleMultisets = new ArrayList<>();
-		List<Integer> possibleMultiSet = new ArrayList<>();
-		int maxminumMultisetsLenght = -1;
-		int frst = -1, scnd = -1;
-		int multiSetFirstelement = inputArray[0];
-		for (int i = 0; i < inputArray.length - 1; i++) {
-			frst = inputArray[i];
-			scnd = inputArray[i + 1];
-			if (isEligible(frst, scnd, multiSetFirstelement)) {
-				multiSetFirstelement = frst;
-				possibleMultiSet.add(frst);
-				continue;
-			}
-			multiSetFirstelement = scnd;
-			possibleMultiSet.add(frst);
-			possibleMultisets.add(possibleMultiSet);
-			maxminumMultisetsLenght = maxminumMultisetsLenght > possibleMultiSet.size() ? maxminumMultisetsLenght
-					: possibleMultiSet.size();
-			possibleMultiSet = new ArrayList<>();
-		}
-		multiSetFirstelement = scnd;
-		possibleMultiSet.add(frst);
-		possibleMultisets.add(possibleMultiSet);
-		maxminumMultisetsLenght = maxminumMultisetsLenght > possibleMultiSet.size() ? maxminumMultisetsLenght
-				: possibleMultiSet.size();
-		result[0] = maxminumMultisetsLenght;
-		result[1] = possibleMultisets;
-		return result;
-	}*/
 
 	public int pickmaxmimumMultiset(List<Integer> inputArray) {
 		Collections.sort(inputArray);
@@ -48,12 +34,12 @@ public class PickingNumber {
 				continue;
 			}
 			multiSetFirstelement = scnd;
-			maxminumMultisetsLenght = maxminumMultisetsLenght > (currentMaxLenth+1) ? maxminumMultisetsLenght
-					: (currentMaxLenth+1);
-			currentMaxLenth=0;
+			maxminumMultisetsLenght = maxminumMultisetsLenght > (currentMaxLenth + 1) ? maxminumMultisetsLenght
+					: (currentMaxLenth + 1);
+			currentMaxLenth = 0;
 		}
-		maxminumMultisetsLenght = maxminumMultisetsLenght > (currentMaxLenth+1) ? maxminumMultisetsLenght
-				: (currentMaxLenth+1);
+		maxminumMultisetsLenght = maxminumMultisetsLenght > (currentMaxLenth + 1) ? maxminumMultisetsLenght
+				: (currentMaxLenth + 1);
 		return maxminumMultisetsLenght;
 
 	}
