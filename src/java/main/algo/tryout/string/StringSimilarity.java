@@ -24,11 +24,12 @@ package algo.tryout.string;
  */
 public class StringSimilarity {
 
-	public long stringSimilarity(String s) {
+	public long checkstringSimilarity(String s) {
 		int matchChar = 0, strLen = s.length();
 		String subStr = null;
 		for (int i = 1; i < strLen; i++) {
 			subStr = s.substring(i, strLen);
+			//System.out.println("loop-"+i);
 			if (s.charAt(0) != subStr.charAt(0)) {
 				continue;
 			}
@@ -38,12 +39,44 @@ public class StringSimilarity {
 
 	}
 
+	/*
+	 * private int getTotalMatchedChar(String s, String substring) { int i = 0;
+	 * while (s.charAt(i) == substring.charAt(i)) { i++; if (i >=
+	 * substring.length()) { break; }
+	 * 
+	 * } return i; }
+	 */
+
 	private int getTotalMatchedChar(String s, String substring) {
-		int i = 0;
-		while (s.charAt(i) == substring.charAt(i)) {
-			i++;
-			if(i>=substring.length()) {break;}
-			
+		int i = 0, sstrlen = substring.length(), loop = sstrlen > 1 ? 1 : sstrlen, left = 0, right = 0;
+		if (sstrlen < 2) {
+			if (s.charAt(left) == substring.charAt(left)) {
+				i++;
+				if (loop < sstrlen && s.charAt(loop) == substring.charAt(loop)) {
+					i++;
+				}
+			}
+			return i;
+		}
+		while (loop < sstrlen) {
+			left = loop - 1;
+			right = loop + 1;
+			if (s.charAt(left) == substring.charAt(left)) {
+				i++;
+				if (loop < sstrlen && s.charAt(loop) == substring.charAt(loop)) {
+					i++;
+					if (right < sstrlen && s.charAt(right) == substring.charAt(right)) {
+						i++;
+					} else {
+						break;
+					}
+				} else {
+					break;
+				}
+			} else {
+				break;
+			}
+			loop= right+2;
 		}
 		return i;
 	}
