@@ -25,59 +25,64 @@ package algo.tryout.string;
 public class StringSimilarity {
 
 	public long checkstringSimilarity(String s) {
-		int matchChar = 0, strLen = s.length();
-		String subStr = null;
-		for (int i = 1; i < strLen; i++) {
-			subStr = s.substring(i, strLen);
-			//System.out.println("loop-"+i);
-			if (s.charAt(0) != subStr.charAt(0)) {
-				continue;
-			}
-			matchChar += getTotalMatchedChar(s, subStr);
+		boolean byOwn = false;
+		if (byOwn) {
+			return checkstringSimilarityByOwn(s);
+		} else {
+			return checkstringSimilaritybyZalgo(s);
 		}
-		return matchChar + strLen;
+	}
+
+	public long checkstringSimilarityByOwn(String s) {
+		byte[] src = s.getBytes();
+		long matchChar = 0;
+		for (int i = 1; i < src.length; i++) {
+			/*if (src[0] != src[i]) {
+				continue;
+			}*/
+			int j=i;
+			while (j < src.length && src[j-i] == src[j++])
+				matchChar++;
+		}
+		return matchChar + src.length;
 
 	}
 
-	/*
-	 * private int getTotalMatchedChar(String s, String substring) { int i = 0;
-	 * while (s.charAt(i) == substring.charAt(i)) { i++; if (i >=
-	 * substring.length()) { break; }
-	 * 
-	 * } return i; }
-	 */
+	public long checkstringSimilaritybyZalgo(String s) {
+		char[] srcChar = s.toCharArray();
+		long matchChar = srcChar.length;
+		int totalLen = srcChar.length;
+		int[] zarray = new int[totalLen];
+		similaritybyZAlgorithm(srcChar, totalLen, zarray);
+		for (int matchedchar : zarray) {
+			matchChar += matchedchar;
+		}
+		// }
+		return matchChar;
 
-	private int getTotalMatchedChar(String s, String substring) {
-		int i = 0, sstrlen = substring.length(), loop = sstrlen > 1 ? 1 : sstrlen, left = 0, right = 0;
-		if (sstrlen < 2) {
-			if (s.charAt(left) == substring.charAt(left)) {
-				i++;
-				if (loop < sstrlen && s.charAt(loop) == substring.charAt(loop)) {
-					i++;
-				}
-			}
-			return i;
-		}
-		while (loop < sstrlen) {
-			left = loop - 1;
-			right = loop + 1;
-			if (s.charAt(left) == substring.charAt(left)) {
-				i++;
-				if (loop < sstrlen && s.charAt(loop) == substring.charAt(loop)) {
-					i++;
-					if (right < sstrlen && s.charAt(right) == substring.charAt(right)) {
-						i++;
-					} else {
-						break;
-					}
-				} else {
-					break;
-				}
+	}
+
+	private void similaritybyZAlgorithm(char[] s, int n, int[] z) {
+		int L = 0, R = 0;
+		for (int i = 1; i < n; i++) {
+			if (i > R) {
+				L = R = i;
+				while (R < n && s[R - L] == s[R])
+					R++;
+				z[i] = R - L;
+				R--;
 			} else {
-				break;
+				int k = i - L;
+				if (z[k] < R - i + 1)
+					z[i] = z[k];
+				else {
+					L = i;
+					while (R < n && s[R - L] == s[R])
+						R++;
+					z[i] = R - L;
+					R--;
+				}
 			}
-			loop= right+2;
 		}
-		return i;
 	}
 }
