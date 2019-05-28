@@ -23,66 +23,38 @@ package algo.tryout.string;
  *
  */
 public class StringSimilarity {
-
-	public long checkstringSimilarity(String s) {
-		boolean byOwn = false;
-		if (byOwn) {
-			return checkstringSimilarityByOwn(s);
-		} else {
-			return checkstringSimilaritybyZalgo(s);
-		}
-	}
-
-	public long checkstringSimilarityByOwn(String s) {
-		byte[] src = s.getBytes();
-		long matchChar = 0;
-		for (int i = 1; i < src.length; i++) {
-			/*if (src[0] != src[i]) {
+	public long checkstringSimilarity(String input) {
+		char[] inputChars = input.toCharArray();
+		int[] zarray = new int[inputChars.length];
+		int left = 0, right = 0;
+		long matchedChars = inputChars.length;
+		for (int current = 1; current < inputChars.length; current++) {
+			if (inputChars[0] != inputChars[current])
 				continue;
-			}*/
-			int j=i;
-			while (j < src.length && src[j-i] == src[j++])
-				matchChar++;
-		}
-		return matchChar + src.length;
+			if (right > current) {
 
-	}
-
-	public long checkstringSimilaritybyZalgo(String s) {
-		char[] srcChar = s.toCharArray();
-		long matchChar = srcChar.length;
-		int totalLen = srcChar.length;
-		int[] zarray = new int[totalLen];
-		similaritybyZAlgorithm(srcChar, totalLen, zarray);
-		for (int matchedchar : zarray) {
-			matchChar += matchedchar;
-		}
-		// }
-		return matchChar;
-
-	}
-
-	private void similaritybyZAlgorithm(char[] s, int n, int[] z) {
-		int L = 0, R = 0;
-		for (int i = 1; i < n; i++) {
-			if (i > R) {
-				L = R = i;
-				while (R < n && s[R - L] == s[R])
-					R++;
-				z[i] = R - L;
-				R--;
-			} else {
-				int k = i - L;
-				if (z[k] < R - i + 1)
-					z[i] = z[k];
-				else {
-					L = i;
-					while (R < n && s[R - L] == s[R])
-						R++;
-					z[i] = R - L;
-					R--;
+				if (zarray[current - left] < right - current + 1) {
+					zarray[current] = zarray[current - left];
 				}
+				else {
+					left=current;
+					while(right<inputChars.length && inputChars[right-left]==inputChars[right])
+						right++;
+					zarray[current]=right-left;
+					right--;
+				}
+				continue;
 			}
+			left = right = current;
+			while (right < inputChars.length && inputChars[right - current] == inputChars[right])
+				right++;
+			zarray[current] = (right - current);
+			right--;
 		}
+		for (int matched : zarray) {
+			matchedChars += matched;
+		}
+		return matchedChars;
+
 	}
 }
