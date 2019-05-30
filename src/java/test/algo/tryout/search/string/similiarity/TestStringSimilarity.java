@@ -1,4 +1,4 @@
-package algo.tryout.string;
+package algo.tryout.search.string.similiarity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.junit.jupiter.api.Test;
+
+import algo.tryout.search.string.similiarity.StringSimilarity;
 
 public class TestStringSimilarity {
 

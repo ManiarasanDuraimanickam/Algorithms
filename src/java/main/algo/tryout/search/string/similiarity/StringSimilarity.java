@@ -1,4 +1,4 @@
-package algo.tryout.string;
+package algo.tryout.search.string.similiarity;
 
 /**
  * You're comparing ababaa against all the possible substrings of that string.
@@ -35,12 +35,11 @@ public class StringSimilarity {
 
 				if (zarray[current - left] < right - current + 1) {
 					zarray[current] = zarray[current - left];
-				}
-				else {
-					left=current;
-					while(right<inputChars.length && inputChars[right-left]==inputChars[right])
+				} else {
+					left = current;
+					while (right < inputChars.length && inputChars[right - left] == inputChars[right])
 						right++;
-					zarray[current]=right-left;
+					zarray[current] = right - left;
 					right--;
 				}
 				continue;
@@ -55,6 +54,23 @@ public class StringSimilarity {
 			matchedChars += matched;
 		}
 		return matchedChars;
+
+	}
+
+	public long checkstringSimilarityByOwn(String s) {
+		byte[] src = s.getBytes();
+		long matchChar = 0;
+		for (int i = 1; i < src.length; i++) {
+
+			if (src[0] != src[i]) {
+				continue;
+			}
+
+			int j = i;
+			while (j < src.length && src[j - i] == src[j++])
+				matchChar++;
+		}
+		return matchChar + src.length;
 
 	}
 }
