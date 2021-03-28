@@ -1,4 +1,4 @@
-package algo.tryout.lamdafunctions;
+package algo.tryout.java.lamda.func;
 
 import java.util.ArrayList;
 import java.util.Arrays;
