@@ -3,10 +3,11 @@ package algo.tryout.java;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,6 +15,26 @@ public class TestLabel {
 
 	public static void main(String[] args) throws InterruptedException {
 		// testMapFlatMap();
+		List<String> f=new LinkedList<String>();
+		((LinkedList)f).add("how");
+		((LinkedList)f).addLast("you");
+		((LinkedList)f).addFirst("hai");
+		((LinkedList)f).add("are");
+		//System.out.println(Arrays.toString(f.toArray()));
+		
+		for(String s:f) {
+			System.out.println(s);
+		}
+		
+		System.err.println("itertor");
+		for(Iterator< String> itr=f.iterator();itr.hasNext();) {
+			System.out.println(itr.next());
+		}
+		//DataFlavorUtil s;
+		
+//		DesktopDatatransferService s=new DesktopDatatransferServiceImpl();
+//		jdk.internal.perf.PerfCounter
+		
 		exploreFunctions();
 //		testLabeledLoopBreak();
 //		testLabeledLoopContinue();
